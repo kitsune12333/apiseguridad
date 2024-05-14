@@ -9,6 +9,7 @@ urlpatterns = [
     #path('', include(router.urls)),
     path('prueba/',views.Prueba.as_view()),
     path('add/', views.UsuarioAdd, name="add"),
-    path('listar/', views.ListarUsuarios, name="listar")
+    path('listar/', views.ListarUsuarios, name="listar"),
+    path('login/', views.LoginUsuario, name="login"),
     
 ]
