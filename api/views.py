@@ -17,16 +17,26 @@ class UsuarioViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UsuariosSerializer"""
     
+"""
 class Register(viewsets.ModelViewSet):
     queryset = Usuario.objects.all()
+"""
 
-
-class Prueba(APIView):
+class IndexView(APIView):
     permission_classes = [IsAuthenticated]
     
     def get(self, request, format=None):
-        return Response("Exito")
+        return render(request, 'api/index.html')
+"""class Prueba(APIView):
+    permission_classes = [IsAuthenticated]
     
+    def get(self, request, format=None):
+        return render(request, 'api/index.html')
+"""
+def LoginUsuario(request):
+    return render(request, 'api/login.html')
+def RegisterUsuario(request):
+    return render(request, 'api/register.html')
 @api_view(["POST"])
 def UsuarioAdd(request):
     serializer = UsuariosSerializer(data=request.data)
@@ -34,7 +44,7 @@ def UsuarioAdd(request):
         serializer.save()
     else:
         return Response(serializer.errors)
-    return Response(serializer.data)
+    return render(request, 'api/login.html')
 
 @api_view(["GET"])
 def ListarUsuarios(request):
@@ -43,12 +53,13 @@ def ListarUsuarios(request):
     return Response(serializer.data)
 
 @api_view(["POST"])
-def LoginUsuario(request):
-    data = {"username": "admin","password": "admin"}
+def ValidarUsuario(request):
+    username = request.POST["username"]
+    password = request.POST["password"]
+    
+    data = {"username": username,"password": password}
     headers = {'Content-type': 'application/json', }
     response = requests.post('http://127.0.0.1:8000/api/v1/token/', data=json.dumps(data), headers=headers)
-    
-
     
     if response.status_code == 200:
         print("Exito")
