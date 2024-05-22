@@ -54,6 +54,7 @@ def ListarUsuarios(request):
 
 @api_view(["POST"])
 def ValidarUsuario(request):
+    
     username = request.POST["username"]
     password = request.POST["password"]
     
@@ -61,8 +62,10 @@ def ValidarUsuario(request):
     headers = {'Content-type': 'application/json', }
     response = requests.post('http://127.0.0.1:8000/api/v1/token/', data=json.dumps(data), headers=headers)
     
+    token = json.loads(response.text)
+
     if response.status_code == 200:
         print("Exito")
-        return render(request, 'api/index.html', {'response': response})
+        return render(request, 'api/index.html', {'response': response, 'access':token['access'], 'refresh': token['refresh']})
     else:
         print("Fallo")
